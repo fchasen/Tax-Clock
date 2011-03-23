@@ -9,8 +9,10 @@ Raphael.fn.g.piechart = function (cx, cy, rad, opts) {
     var paper = this
     var data = 0, //[24, 92, 24, 52, 78, 99, 82, 27]
         paths = paper.set(),
+        face = paper.set(),
         total,
         start,
+        hoursText,
         bg = paper.circle(cx, cy, 0).attr({stroke: "none", "stroke-width": 4});
          
     paper.customAttributes.segment = function (x, y, r, a1, a2) {
@@ -73,8 +75,11 @@ Raphael.fn.g.piechart = function (cx, cy, rad, opts) {
                   p.ccy = cy;
                   p.vval = val;
                   
-                  paths.push(p)
+                  paths.push(p);
                   
+                   p.click(function () {
+                     paper.wipe();
+                   });
                   // p.click(function () {
                   //                       d = data[i];
                   //                       total += d.value;
@@ -95,10 +100,12 @@ Raphael.fn.g.piechart = function (cx, cy, rad, opts) {
                   
                   p.hover(function () {
                        //this.stop();
-                       //this.animate({segment: [p.ccx, p.ccy, rad+10, p.ss, p.ss + p.vval]}, 500,  "bounce");
-                      $("#dept").html(p.attr("title"));
+                      this.animate({opacity: .60}, 500,  "ease");
+                      hoursText.attr('text', p.attr("title"));
+            	        
                    }, function () {
                        //this.animate({segment: [p.ccx, p.ccy, rad, p.ss, p.ss + p.vval]}, 500,  "bounce");
+                       this.animate({opacity: 1}, 500,  "ease");
                        
                    });
                   
@@ -107,18 +114,41 @@ Raphael.fn.g.piechart = function (cx, cy, rad, opts) {
           }
           
           //bg.animate({r: 151}, 1000, "easeout");
-          //parent.animate(1000, "bounce");
+          parent.animate(1000, "easeout");
     }
     
     
-    this.showInfo = function (i, which) {
+    this.showInfo = function (which, amount) {
         var start = 180,
             val;
             //var coloring = "rgb(" + (i+1) *23 + ", " + (i+1)*53 + ", " + (i+1)*13 + ")";
         
-        var infoBg = paper.circle(cx+2, cy+2, rad-60).attr({fill:"#dedddb", stroke: "none", "stroke-width": 4});   
-        //infoBg.animate({r: rad-60}, 500,  "ease");
         
+        var fontSizer = 20;
+        if(cx <= 360){
+          fontSizer = 16;
+        }
+        
+        face.push(
+         paper.circle(cx+2, cy+2, rad-60).attr({fill:"#dedddb", stroke: "none", "stroke-width": 4}),
+                                                                                                                
+          paper.text(cx, (cy-(rad-120)), "You paid $"+amount+" to the").attr({"font-family": "Crimson Text", 'font-size': (fontSizer+6)+"px", "font-style":"italic"}),
+          paper.text(cx, (cy-(rad-150)), which).attr({"font-family": "Crimson Text", 'font-size': (fontSizer+4)+"px"}),
+     	    hoursText = paper.text(cx, (cy), "").attr({"font-family": "Crimson Text", 'font-size': (fontSizer)+"px", "font-style":"italic"})
+         );
+    }
+    
+    this.wipe = function (){
+      paths.animate({opacity: 0}, 1000, "easeout", function(){
+        paths.remove();
+        
+      });
+      
+      face.animate({r: 0}, 1000, "easeout", function(){
+        face.remove();
+        
+      });
+      
     }
     
     this.animate = function (ms, effect, backto) {

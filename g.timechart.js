@@ -12,7 +12,8 @@ Raphael.fn.g.timechart = function (cx, cy, rad, opts) {
         total,
         start,
         bg = paper.circle(cx, cy, 0).attr({stroke: "none", "stroke-width": 4});
-         
+    
+             
     paper.customAttributes.segment = function (x, y, r, a1, a2) {
         var flag = (a2 - a1) > 180,
             clr = (a2 - a1) / 360;
@@ -77,6 +78,7 @@ Raphael.fn.g.timechart = function (cx, cy, rad, opts) {
                   
                   p.click(function () {
                       d = data[i];
+                      od = d.value;
                       total += d.value;
                       d.value *= 2;
                       parent.animate("600", "bounce", function(){
@@ -85,18 +87,25 @@ Raphael.fn.g.timechart = function (cx, cy, rad, opts) {
                         d.value = 0; //REMOVE
                         //total -= d.value /2;
                         //d.value /= 2;
-                        parent.animate("600");
+                        var lb = d.label;
+                        var vl = od;
+                        var wh = i;
+
+                        parent.animate("600", "bounce", function(){
+                          getInfo(ids[wh], wh, lb, vl);
+                          
+                        });
                       });
                       
                       $("#info").html(getInfo(d.label,d.value));
                       //console.log(d.label);
-                      getInfo(ids[i], i, d.label, d.value);
                   });
                   
                   p.hover(function () {
                        this.stop();
                        this.animate({segment: [p.ccx, p.ccy, rad+10, p.ss, p.ss + p.vval]}, 500,  "bounce");
-                      $("#dept").html(p.attr("title"));
+                       clocked.writeto(p.attr("title"));
+                      //$("#dept").html(p.attr("title"));
                    }, function () {
                        this.animate({segment: [p.ccx, p.ccy, rad, p.ss, p.ss + p.vval]}, 500,  "bounce");
                        

@@ -6,13 +6,22 @@ var salary = 50000;
 var hourly = 24;
 var year = 2010;
 var offset = 0;
-  var right = 50;
-  var top = 100;
+
 jQuery(document).ready(function($) {
   
-  canvas = Raphael("canvas", 1300, 1000);
-  clocked = canvas.clock(400,400,400);
-  pie = canvas.g.timechart(450, 500, 410);
+  var wheight = parseInt($(window).height());
+
+  if(wheight < 600){
+    canvas = Raphael("canvas", 620, 700);
+    clocked = canvas.clock(300,300,230);
+    pie = canvas.g.timechart(300, 300, 280);
+  }else{
+    canvas = Raphael("canvas", 840, 900);
+    clocked = canvas.clock(420,420,350);
+    pie = canvas.g.timechart(420, 420, 410);
+  }
+  
+  
   
   timeline = Raphael("theyears", 450, 8).timeline(400,31);
   
@@ -69,7 +78,7 @@ jQuery(document).ready(function($) {
       getData("agency", year, salary);
     }
   });
-  
+ 
 });
 
 
@@ -101,7 +110,7 @@ var getData = function(group,year,income) {
 
 }
 
-var getSubData = function(agency,year,income, place) {
+var getSubData = function(agency,year,income, label, val) {
    //http://www.whatwepayfor.com/api/getBudgetAccount?income=50000&year=2010&bureau=2
    
    var base = "http://www.whatwepayfor.com/api/";
@@ -122,7 +131,7 @@ var getSubData = function(agency,year,income, place) {
          }
          var items = xml.getElementsByTagName('item');
          
-         analyzeSubData(items, income, place);
+         analyzeSubData(items, income, label, val);
          
     });
     
@@ -132,7 +141,7 @@ var getSubData = function(agency,year,income, place) {
 window.onload = getData("agency", "2011", "50000");
 
 function analyzeData(data, income){
-  var items = [],
+ var  items = [],
       labels = [],
       ids = [],
       leftover = income;
@@ -169,7 +178,7 @@ function analyzeData(data, income){
       }
 }
 
-function analyzeSubData(data, income, place){
+function analyzeSubData(data, income, label, val){
   var subitems = [],
       sublabels = [],
       other = [],
@@ -190,26 +199,24 @@ function analyzeSubData(data, income, place){
       });
       
       
-      
-      subpie = canvas.g.piechart(450, 500, 350);
+      //pie = canvas.g.timechart(420, 420, 410);
       
       if(typeof(subpie) == 'object'){
-        subpie.draw(subitems, sublabels);
-      }else{
-        subpie.update(subitems, sublabels);
-        
+              subpie.wipe();
+
       }
       
-      subpie.showInfo(place);
+      subpie = canvas.g.piechart(420, 419, 350);
       
+      subpie.draw(subitems, sublabels);
+
+      subpie.showInfo(label, val);
       
 }
 
 
-function getInfo(id, place, label, val){
-  
-  a = getSubData(id, year, salary, place);
-  
+function getInfo(id, place, label, val){  
+  a = getSubData(id, year, salary, label, val);
   
 }
 
