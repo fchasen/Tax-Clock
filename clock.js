@@ -52,9 +52,13 @@ Raphael.fn.clock = function (cx, cy, rad) {
       }  
      	chart.push( 
      	  paper.circle(cx, cy, rad).attr({fill:"none", stroke:"#a7a7a7",'stroke-width':6}),
-     	  paper.image("images/usa.png", cx-81,(cy-(rad-75)), 162, 86),
-     	  paper.image("images/datepicker.png", cx-25,(cy-(rad-158)), 51, 19),
-     	  paper.text(cx, (cy-(rad-169)), "2 0 1 0").attr({"font-family": "Crimson Text", 'font-size': "17px", fill:"#38383a"}),
+     	  //paper.image("images/usa.png", cx-81,(cy-(rad-65)), 162, 86),
+     	  paper.text(cx, (cy-(rad-121)), "<   2 0 1 0    >").attr({"font-family": "Crimson Text", 'font-size': "17px", fill:"#38383a"}),
+     	  paper.text(cx, (cy-(rad-151)), "1 5 0 0 0 0").attr({"font-family": "Crimson Text", 'font-size': "17px", fill:"#38383a"}),
+     	  //paper.text(cx+100, (cy-(rad-200)), "1 2 4").attr({"font-family": "Crimson Text", 'font-size': "17px", fill:"#38383a"}),
+     	  paper.image("images/datepicker.png", cx-26,(cy-(rad-110)), 51, 19),
+     	  paper.image("images/salary.png", cx-38,(cy-(rad-140)), 75, 19),
+     	  //paper.image("images/hourly.png", cx+80,(cy-(rad-189)), 39, 19),
      	  
      	  paper.text(cx, (cy+(rad-150)), "Time Spent Working For The").attr({"font-family": "Crimson Text", 'font-size': fontSizer+"px", "text-align":"center"}),
      	  workingFor = paper.text(cx, (cy+(rad-120)), "United States Government").attr({"font-family": "Crimson Text", 'font-size': (fontSizer+6)+"px", "font-style":"italic"})
