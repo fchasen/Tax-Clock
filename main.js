@@ -11,7 +11,7 @@ jQuery(document).ready(function($) {
   
   var wheight = parseInt($(window).height());
 
-  if(wheight < 600){
+  if(wheight < 700){
     canvas = Raphael("canvas", 620, 700);
     clocked = canvas.clock(300,300,230);
     pie = canvas.g.timechart(300, 300, 280);
